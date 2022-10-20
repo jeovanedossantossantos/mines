@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import Field from './components/Campo/Field';
+import Header from './components/Header/Header';
 import MineField from './components/MineField/MineField';
-import { createMinedBoard } from './functions';
+import { cloneBoard, createMinedBoard, flagsUsed, hadExplosion, invertFlag, openField, showMines, wonGame } from './functions';
 import params from "./params"
+import LevelSelection from './screens/LevelSelection/LevelSelection';
 
 
 export default function App() {
 
-  const [state, setState] = useState({ board: [] })
+  const [state, setState] = useState({ board: [], won: false, lost: false })
 
 
   const minesAmount = () => {
@@ -22,8 +24,45 @@ export default function App() {
     const rows = params.getRowsAmount()
 
     return {
-      board: createMinedBoard(rows, cols, minesAmount())
+      board: createMinedBoard(rows, cols, minesAmount()),
+      won: false,
+      lost: false,
+      showLevelSelection: false,
     }
+  }
+
+  const onOpenField = (row, column) => {
+    const board = cloneBoard(state.board)
+    openField(board, row, column)
+    const lost = hadExplosion(board)
+    const won = wonGame(board)
+
+    if (lost) {
+      showMines(board)
+      Alert.alert('Perdeeeeu!', 'Não desista, tente outra vez!')
+    }
+    if (won) {
+      Alert.alert('Aeeeeeeeeee, parabéns!', 'Sabia que você ia ganhar!')
+    }
+
+    setState({ ...state, board: board, lost: lost, won: won })
+  }
+
+  const onSelectField = (row, column) => {
+    const board = cloneBoard(state.board)
+    invertFlag(board, row, column)
+    const won = wonGame(board)
+
+    if (won) {
+      Alert.alert('Aeeeeeeeeee, parabéns!', 'Sabia que você ia ganhar!')
+    }
+
+    setState({ ...state, board: board, won: won })
+  }
+
+  const onLevelSelected = (level) => {
+    params.difficultLevel = level
+    setState(createState())
   }
 
   useEffect(() => {
@@ -32,13 +71,22 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Iniciando o Mines!!!</Text>
-      <Text>Tamano da grade:
-        {params.getRowsAmount()}X{params.getColumnsAmount()}
-      </Text>
-      <View style={styles.board}>
+      <LevelSelection isVisible={state.showLevelSelection}
+        onLevelSelected={onLevelSelected}
+        onCancel={() => setState({ ...state, showLevelSelection: false })} />
+      <Header
+        flagsLeft={minesAmount() - flagsUsed(state.board)}
+        onNewGame={() => setState(createState())}
+        onFlagPress={() => setState({ ...state, showLevelSelection: true })}
+      />
 
-        <MineField board={state.board} />
+      <View style={styles.board1}>
+
+        <MineField
+          board={state.board}
+          onOpenField={onOpenField}
+          onSelectField={onSelectField}
+        />
 
       </View>
 
@@ -52,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  board: {
+  board1: {
     alignItems: 'center',
     backgroundColor: "#AAA"
   }
