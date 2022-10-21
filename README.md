@@ -33,7 +33,7 @@ Explore o desconhecido. Não sabe onde clicar em seguida? Tente esvaziar algum t
 
 # Layout
 
-<div display="flex">
+<div display="flex" align="center">
 
 <img src='https://user-images.githubusercontent.com/60934938/197194529-40447d43-6f16-4597-ae4d-82a13cc3323d.png'/>
 
