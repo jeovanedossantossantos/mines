@@ -1,19 +1,11 @@
 {
   "expo": {
-    "name": "Campo Minado",
-    "slug": "Campo Minado",
-    "icon": "./icone/calculadora.png",
+    "name": "mines",
+    "slug": "mines",
     "version": "1.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "splash": {
-      "resizeMode": "contain"
-    },
-    "android": {
-      "package": "com.jeovane.campo_minado",
-      "versionCode": 1
-    }
-  }
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "mines"
 }
