@@ -1,11 +1,26 @@
 {
   "expo": {
-    "name": "mines",
-    "slug": "mines",
+    "name": "Campo Minado",
+    "slug": "CampoMinado",
+    "icon": "./assets/icon.png",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  },
-  "name": "mines"
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "splash": {
+      "image": "./assets/screen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000"
+    },
+    "android": {
+      "package": "com.jeovane.campo_minado",
+      "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "05aa8ac1-4ce7-4e7e-a33e-0e905a70a06b"
+      }
+    }
+  }
 }

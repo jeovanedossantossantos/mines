@@ -1,6 +1,6 @@
 import React from "react";
 import params from "../../params"
-import { View, StyleSheet, Text } from "react-native"
+import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native"
 import Mine from "../Mine/Mine";
 import Flag from "../Flag/Flag";
 
@@ -25,13 +25,15 @@ export default Field = (props) => {
     }
 
     return (
-        <View style={styleField}>
-            {!mined && opened && nearMines > 0 ?
-                <Text style={[styles.label, { color: color }]}>{nearMines}</Text> : false}
-            {mined && opened ? <Mine /> : false}
-            {flagged && !opened ? <Flag /> : false}
+        <TouchableNativeFeedback onPress={props.onOpen} onLongPress={props.onSelect}>
+            <View style={styleField}>
+                {!mined && opened && nearMines > 0 ?
+                    <Text style={[styles.label, { color: color }]}>{nearMines}</Text> : false}
+                {mined && opened ? <Mine /> : false}
+                {flagged && !opened ? <Flag /> : false}
 
-        </View>
+            </View>
+        </TouchableNativeFeedback>
     )
 }
 
